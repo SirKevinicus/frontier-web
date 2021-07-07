@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 import axios from "axios";
-import Scream from "../components/scream/Scream";
+import Post from "../components/post/Post";
 
 // REDUX
 import { connect } from "react-redux";
@@ -10,7 +10,7 @@ import { getUserData } from "../redux/actions/dataActions";
 
 // COMPONENTS
 import StaticProfile from "../components/profile/StaticProfile";
-import ScreamSkeleton from "../util/ScreamSkeleton";
+import PostSkeleton from "../util/PostSkeleton";
 import ProfileSkeleton from "../util/ProfileSkeleton";
 
 // MUI
@@ -19,15 +19,15 @@ import Grid from "@material-ui/core/Grid";
 class user extends Component {
 	state = {
 		profile: null,
-		screamIdParam: null,
+		postIdParam: null,
 	};
 
 	componentDidMount() {
 		const handle = this.props.match.params.handle;
-		const screamId = this.props.match.params.screamId; // gets the values from the url
+		const postId = this.props.match.params.postId; // gets the values from the url
 
-		// if a screamId is passed in through the url, set it in the state
-		if (screamId) this.setState({ screamIdParam: screamId });
+		// if a postId is passed in through the url, set it in the state
+		if (postId) this.setState({ postIdParam: postId });
 
 		this.props.getUserData(handle);
 		axios
@@ -41,31 +41,31 @@ class user extends Component {
 	}
 
 	render() {
-		const { screams, loading } = this.props.data;
-		const { screamIdParam } = this.state;
+		const { posts, loading } = this.props.data;
+		const { postIdParam } = this.state;
 
 		// 1st case: if loading, display loading
-		// 2nd case: if there are no screams, display message
-		// 3rd case: if there is not a screamIdParam passed through the URL, then display all of the screams for this user
-		// 4th case: display all screams for the user, and open the scream (input through the screamIdParam) using a dialog
-		const screamsMarkup = loading ? (
-			<ScreamSkeleton />
-		) : screams === null ? (
-			<p>No screams for this user</p>
-		) : !screamIdParam ? (
-			screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
+		// 2nd case: if there are no posts, display message
+		// 3rd case: if there is not a postIdParam passed through the URL, then display all of the posts for this user
+		// 4th case: display all posts for the user, and open the post (input through the postIdParam) using a dialog
+		const postsMarkup = loading ? (
+			<PostSkeleton />
+		) : posts === null ? (
+			<p>No posts for this user</p>
+		) : !postIdParam ? (
+			posts.map((post) => <Post key={post.postId} post={post} />)
 		) : (
-			screams.map((scream) => {
-				if (scream.screamId !== screamIdParam)
-					return <Scream key={scream.screamId} scream={scream} />;
-				else return <Scream key={scream.screamId} scream={scream} openDialog />;
+			posts.map((post) => {
+				if (post.postId !== postIdParam)
+					return <Post key={post.postId} post={post} />;
+				else return <Post key={post.postId} post={post} openDialog />;
 			})
 		);
 
 		return (
 			<Grid container spacing={2}>
 				<Grid item sm={8} xs={12}>
-					{screamsMarkup}
+					{postsMarkup}
 				</Grid>
 				<Grid item sm={4} xs={12}>
 					{this.state.profile === null ? (

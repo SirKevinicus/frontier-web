@@ -3,30 +3,30 @@ import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 
 // Components
-import Scream from "../components/scream/Scream";
+import Post from "../components/post/Post";
 import Profile from "../components/profile/Profile";
-import ScreamSkeleton from "../util/ScreamSkeleton";
+import PostSkeleton from "../util/PostSkeleton";
 
 // Redux
 import { connect } from "react-redux";
-import { getScreams } from "../redux/actions/dataActions";
+import { getPosts } from "../redux/actions/dataActions";
 
 export class home extends Component {
 	componentDidMount() {
-		this.props.getScreams();
+		this.props.getPosts();
 	}
 	render() {
-		const { screams, loading } = this.props.data;
-		let recentScreamsMarkup = !loading ? (
-			screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
+		const { posts, loading } = this.props.data;
+		let recentPostsMarkup = !loading ? (
+			posts.map((post) => <Post key={post.postId} post={post} />)
 		) : (
-			<ScreamSkeleton />
+			<PostSkeleton />
 		);
 
 		return (
 			<Grid container spacing={2}>
 				<Grid item sm={8} xs={12}>
-					{recentScreamsMarkup}
+					{recentPostsMarkup}
 				</Grid>
 				<Grid item sm={4} xs={12}>
 					<Profile />
@@ -37,7 +37,7 @@ export class home extends Component {
 }
 
 home.propTypes = {
-	getScreams: PropTypes.func.isRequired,
+	getPosts: PropTypes.func.isRequired,
 	data: PropTypes.object.isRequired,
 };
 
@@ -45,4 +45,4 @@ const mapStateToProps = (state) => ({
 	data: state.data,
 });
 
-export default connect(mapStateToProps, { getScreams })(home);
+export default connect(mapStateToProps, { getPosts })(home);

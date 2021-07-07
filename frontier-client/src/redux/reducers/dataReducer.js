@@ -1,17 +1,17 @@
 import {
-	SET_SCREAMS,
-	SET_SCREAM,
-	LIKE_SCREAM,
-	UNLIKE_SCREAM,
-	POST_SCREAM,
+	SET_POSTS,
+	SET_POST,
+	LIKE_POST,
+	UNLIKE_POST,
+	SUBMIT_POST,
 	LOADING_DATA,
-	DELETE_SCREAM,
+	DELETE_POST,
 	SUBMIT_COMMENT,
 } from "../types";
 
 const initialState = {
-	screams: [],
-	scream: {},
+	posts: [],
+	post: {},
 	loading: false,
 };
 
@@ -22,31 +22,31 @@ export default function dataReducer(state = initialState, action) {
 				...state,
 				loading: true,
 			};
-		case SET_SCREAMS:
+		case SET_POSTS:
 			return {
 				...state,
-				screams: action.payload,
+				posts: action.payload,
 				loading: false,
 			};
-		case SET_SCREAM:
+		case SET_POST:
 			return {
 				...state,
-				scream: action.payload,
+				post: action.payload,
 			};
-		case POST_SCREAM:
+		case SUBMIT_POST:
 			return {
 				...state,
-				screams: [action.payload, ...state.screams],
+				posts: [action.payload, ...state.posts],
 			};
-		case LIKE_SCREAM:
-		case UNLIKE_SCREAM:
-			let index = state.screams.findIndex(
-				(scream) => scream.screamId === action.payload.screamId
+		case LIKE_POST:
+		case UNLIKE_POST:
+			let index = state.posts.findIndex(
+				(post) => post.postId === action.payload.postId
 			);
-			state.screams[index] = action.payload;
-			// check the singular scream in the state to update that one too
-			if (state.scream.screamId === action.payload.screamId) {
-				state.scream = action.payload;
+			state.posts[index] = action.payload;
+			// check the singular post in the state to update that one too
+			if (state.post.postId === action.payload.postId) {
+				state.post = action.payload;
 			}
 			return {
 				...state,
@@ -54,16 +54,14 @@ export default function dataReducer(state = initialState, action) {
 		case SUBMIT_COMMENT:
 			return {
 				...state,
-				scream: {
-					...state.scream,
-					comments: [action.payload, ...state.scream.comments],
+				post: {
+					...state.post,
+					comments: [action.payload, ...state.post.comments],
 				},
 			};
-		case DELETE_SCREAM:
-			index = state.screams.findIndex(
-				(scream) => scream.screamId === action.payload
-			);
-			state.screams.splice(index, 1);
+		case DELETE_POST:
+			index = state.posts.findIndex((post) => post.postId === action.payload);
+			state.posts.splice(index, 1);
 			return { ...state };
 		default:
 			return state;

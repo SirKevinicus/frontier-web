@@ -3,8 +3,8 @@ import {
 	LOADING_USER,
 	SET_AUTHENTICATED,
 	SET_UNAUTHENTICATED,
-	LIKE_SCREAM,
-	UNLIKE_SCREAM,
+	LIKE_POST,
+	UNLIKE_POST,
 	MARK_NOTIFICATIONS_READ,
 } from "../types";
 
@@ -36,22 +36,22 @@ export default function userReducer(state = initialState, action) {
 				...state,
 				loading: true,
 			};
-		case LIKE_SCREAM:
+		case LIKE_POST:
 			return {
 				...state,
 				likes: [
 					...state.likes,
 					{
 						userHandle: state.credentials.handle,
-						screamId: action.payload.screamId,
+						postId: action.payload.postId,
 					},
 				],
 			};
-		case UNLIKE_SCREAM:
+		case UNLIKE_POST:
 			return {
 				...state,
 				likes: state.likes.filter(
-					(like) => like.screamId !== action.payload.screamId
+					(like) => like.postId !== action.payload.postId
 				),
 			};
 		case MARK_NOTIFICATIONS_READ:

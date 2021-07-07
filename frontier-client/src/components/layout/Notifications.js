@@ -77,11 +77,11 @@ class Notifications extends Component {
 							{icon}
 							<Typography
 								component={Link}
-								to={`/users/${noti.recipient}/scream/${noti.screamId}`}
+								to={`/users/${noti.recipient}/post/${noti.postId}`}
 								color="default"
 								variant="body1"
 							>
-								{noti.sender} {verb} your scream {time}
+								{noti.sender} {verb} your post {time}
 							</Typography>
 						</MenuItem>
 					);

@@ -4,7 +4,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 // Redux
 import { connect } from "react-redux";
-import { postScream, clearErrors } from "../../redux/actions/dataActions";
+import { submitPost, clearErrors } from "../../redux/actions/dataActions";
 
 // Components
 import MyButton from "../../util/MyButton";
@@ -39,7 +39,7 @@ const styles = (theme) => ({
 	},
 });
 
-class PostScream extends Component {
+class SubmitPost extends Component {
 	state = {
 		open: false,
 		body: "",
@@ -76,7 +76,7 @@ class PostScream extends Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		this.props.postScream({ body: this.state.body });
+		this.props.submitPost({ body: this.state.body });
 		//this.handleClose();
 	};
 
@@ -88,7 +88,7 @@ class PostScream extends Component {
 		} = this.props;
 		return (
 			<Fragment>
-				<MyButton tip="Post Scream" onClick={this.handleOpen}>
+				<MyButton tip="Create Post" onClick={this.handleOpen}>
 					<AddIcon color="primary" />
 				</MyButton>
 
@@ -105,7 +105,7 @@ class PostScream extends Component {
 					>
 						<CloseIcon />
 					</MyButton>
-					<DialogTitle>Post a New Scream</DialogTitle>
+					<DialogTitle>Create a New Post</DialogTitle>
 					<DialogContent>
 						<form onSubmit={this.handleSubmit}>
 							<TextField
@@ -148,12 +148,12 @@ const mapStateToProps = (state) => ({
 	UI: state.UI,
 });
 
-PostScream.propTypes = {
-	postScream: PropTypes.func.isRequired,
+SubmitPost.propTypes = {
+	submitPost: PropTypes.func.isRequired,
 	UI: PropTypes.object.isRequired,
 	clearErrors: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, { postScream, clearErrors })(
-	withStyles(styles)(PostScream)
+export default connect(mapStateToProps, { submitPost, clearErrors })(
+	withStyles(styles)(SubmitPost)
 );

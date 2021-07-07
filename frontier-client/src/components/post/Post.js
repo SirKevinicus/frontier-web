@@ -10,8 +10,8 @@ import { connect } from "react-redux";
 // Components
 import MyButton from "../../util/MyButton";
 import LikeButton from "./LikeButton";
-import DeleteScream from "./DeleteScream";
-import ScreamDialog from "./ScreamDialog";
+import DeletePost from "./DeletePost";
+import PostDialog from "./PostDialog";
 
 // MUI
 import Card from "@material-ui/core/Card";
@@ -37,18 +37,18 @@ const styles = {
 	},
 };
 
-class Scream extends Component {
+class Post extends Component {
 	render() {
 		dayjs.extend(relativeTime);
 
 		const {
 			classes,
-			scream: {
+			post: {
 				body,
 				createdAt,
 				userImage,
 				userHandle,
-				screamId,
+				postId,
 				likeCount,
 				commentCount,
 			},
@@ -60,7 +60,7 @@ class Scream extends Component {
 
 		const deleteButton =
 			authenticated && userHandle === handle ? (
-				<DeleteScream screamId={screamId} />
+				<DeletePost postId={postId} />
 			) : null;
 
 		return (
@@ -88,15 +88,15 @@ class Scream extends Component {
 
 					<Typography variant="body1">{body}</Typography>
 
-					<LikeButton screamId={screamId} />
+					<LikeButton postId={postId} />
 					<span>{likeCount} Likes</span>
 
 					<MyButton tip="comments">
 						<ChatIcon color="primary" />
 					</MyButton>
 					<span>{commentCount} Comments</span>
-					<ScreamDialog
-						screamId={screamId}
+					<PostDialog
+						postId={postId}
 						userHandle={userHandle}
 						openDialog={this.props.openDialog}
 					/>
@@ -106,9 +106,9 @@ class Scream extends Component {
 	}
 }
 
-Scream.propTypes = {
+Post.propTypes = {
 	user: PropTypes.object.isRequired,
-	scream: PropTypes.object.isRequired,
+	post: PropTypes.object.isRequired,
 	classes: PropTypes.object.isRequired,
 };
 
@@ -116,4 +116,4 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-export default connect(mapStateToProps, null)(withStyles(styles)(Scream));
+export default connect(mapStateToProps, null)(withStyles(styles)(Post));

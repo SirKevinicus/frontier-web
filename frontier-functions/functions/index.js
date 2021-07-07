@@ -6,15 +6,26 @@ const { db } = require("./util/admin");
 const cors = require("cors");
 app.use(cors());
 
+// POST ROUTES
 const {
-	getAllScreams,
-	postScream,
-	getScream,
-	commentOnScream,
-	likeScream,
-	unlikeScream,
-	deleteScream,
-} = require("./handlers/screams");
+	getAllPosts,
+	submitPost,
+	getPost,
+	commentOnPost,
+	likePost,
+	unlikePost,
+	deletePost,
+} = require("./handlers/posts");
+
+app.post("/post", FBAuth, submitPost);
+app.get("/post/:postId", getPost);
+app.get("/posts", getAllPosts);
+app.post("/post/:postId/comment", FBAuth, commentOnPost);
+app.delete("/post/:postId", FBAuth, deletePost);
+app.get("/post/:postId/like", FBAuth, likePost);
+app.get("/post/:postId/unlike", FBAuth, unlikePost);
+
+// USER ROUTES
 const {
 	signup,
 	login,
@@ -25,16 +36,6 @@ const {
 	markNotificationsRead,
 } = require("./handlers/users");
 
-// SCREAM ROUTES
-app.post("/scream", FBAuth, postScream);
-app.get("/scream/:screamId", getScream);
-app.get("/screams", getAllScreams);
-app.post("/scream/:screamId/comment", FBAuth, commentOnScream);
-app.delete("/scream/:screamId", FBAuth, deleteScream);
-app.get("/scream/:screamId/like", FBAuth, likeScream);
-app.get("/scream/:screamId/unlike", FBAuth, unlikeScream);
-
-// USER ROUTES
 app.post("/signup", signup);
 app.post("/login", login);
 app.post("/user/image", FBAuth, uploadImage);
@@ -49,7 +50,7 @@ exports.createNotificationOnLike = functions.firestore
 	.document("likes/{id}")
 	.onCreate((snapshot) => {
 		return db
-			.doc(`/screams/${snapshot.data().screamId}`)
+			.doc(`/posts/${snapshot.data().postId}`)
 			.get()
 			.then((doc) => {
 				if (
@@ -62,7 +63,7 @@ exports.createNotificationOnLike = functions.firestore
 						sender: snapshot.data().userHandle,
 						type: "like",
 						read: false,
-						screamId: doc.id,
+						postId: doc.id,
 					});
 				}
 			})
@@ -83,7 +84,7 @@ exports.createNotificationOnComment = functions.firestore
 	.document("comments/{id}")
 	.onCreate((snapshot) => {
 		return db
-			.doc(`/screams/${snapshot.data().screamId}`)
+			.doc(`/posts/${snapshot.data().postId}`)
 			.get()
 			.then((doc) => {
 				if (
@@ -96,7 +97,7 @@ exports.createNotificationOnComment = functions.firestore
 						sender: snapshot.data().userHandle,
 						type: "comment",
 						read: false,
-						screamId: doc.id,
+						postId: doc.id,
 					});
 				}
 			})
@@ -112,33 +113,33 @@ exports.onUserImageChange = functions.firestore
 		if (change.before.data().imageUrl !== change.after.data().imageUrl) {
 			const batch = db.batch();
 			return db
-				.collection("screams")
+				.collection("posts")
 				.where("userHandle", "==", change.before.data().handle)
 				.get()
 				.then((data) => {
 					data.forEach((doc) => {
-						const scream = db.doc(`/screams/${doc.id}`);
-						batch.update(scream, { userImage: change.after.data().imageUrl });
+						const post = db.doc(`/posts/${doc.id}`);
+						batch.update(post, { userImage: change.after.data().imageUrl });
 					});
 					return batch.commit();
 				});
 		} else return true;
 	});
 
-exports.onScreamDelete = functions.firestore
-	.document("/screams/{screamId}")
+exports.onPostDelete = functions.firestore
+	.document("/posts/{postId}")
 	.onDelete((snapshot, context) => {
-		const screamId = context.params.screamId;
+		const postId = context.params.postId;
 		const batch = db.batch();
 		return db
 			.collection("comments")
-			.where("screamId", "==", screamId)
+			.where("postId", "==", postId)
 			.get()
 			.then((data) => {
 				data.forEach((doc) => {
 					batch.delete(db.doc(`/comments/${doc.id}`));
 				});
-				return db.collection("likes").where("screamId", "==", screamId).get();
+				return db.collection("likes").where("postId", "==", postId).get();
 			})
 			.then((data) => {
 				data.forEach((doc) => {
@@ -146,7 +147,7 @@ exports.onScreamDelete = functions.firestore
 				});
 				return db
 					.collection("notifications")
-					.where("screamId", "==", screamId)
+					.where("postId", "==", postId)
 					.get();
 			})
 			.then((data) => {

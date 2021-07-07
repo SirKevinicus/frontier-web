@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 // Redux
 import { connect } from "react-redux";
-import { getScream, clearErrors } from "../../redux/actions/dataActions";
+import { getPost, clearErrors } from "../../redux/actions/dataActions";
 
 // Components
 import MyButton from "../../util/MyButton";
@@ -53,7 +53,7 @@ const styles = (theme) => ({
 	},
 });
 
-class ScreamDialog extends Component {
+class PostDialog extends Component {
 	state = {
 		open: false,
 		oldPath: "",
@@ -66,8 +66,8 @@ class ScreamDialog extends Component {
 
 	handleOpen = () => {
 		let oldPath = window.location.pathname;
-		const { userHandle, screamId } = this.props;
-		const newPath = `/users/${userHandle}/scream/${screamId}`;
+		const { userHandle, postId } = this.props;
+		const newPath = `/users/${userHandle}/post/${postId}`;
 
 		// if url is pasted in (oldPath will be null), set the old path to the user's page
 		if (oldPath === newPath) oldPath = `/users/${userHandle}`;
@@ -75,7 +75,7 @@ class ScreamDialog extends Component {
 		window.history.pushState(null, null, newPath);
 
 		this.setState({ open: true, oldPath, newPath });
-		this.props.getScream(this.props.screamId);
+		this.props.getPost(this.props.postId);
 	};
 	handleClose = () => {
 		window.history.pushState(null, null, this.state.oldPath);
@@ -86,8 +86,8 @@ class ScreamDialog extends Component {
 	render() {
 		const {
 			classes,
-			scream: {
-				screamId,
+			post: {
+				postId,
 				body,
 				createdAt,
 				likeCount,
@@ -128,7 +128,7 @@ class ScreamDialog extends Component {
 
 					<Typography variant="body1">{body}</Typography>
 
-					<LikeButton screamId={screamId} />
+					<LikeButton postId={postId} />
 					<span>{likeCount} Likes</span>
 
 					<MyButton tip="comments">
@@ -138,7 +138,7 @@ class ScreamDialog extends Component {
 				</Grid>
 
 				<hr className={classes.visibleSeparator} />
-				<CommentForm screamId={screamId} />
+				<CommentForm postId={postId} />
 				<Comments comments={comments} />
 			</Grid>
 		);
@@ -147,7 +147,7 @@ class ScreamDialog extends Component {
 			<Fragment>
 				<MyButton
 					onClick={this.handleOpen}
-					tip="Expand scream"
+					tip="Expand Post"
 					tipClassName={classes.expandButton}
 				>
 					<UnfoldMore color="primary" />
@@ -174,26 +174,26 @@ class ScreamDialog extends Component {
 	}
 }
 
-ScreamDialog.propTypes = {
+PostDialog.propTypes = {
 	clearErrors: PropTypes.func.isRequired,
-	getScream: PropTypes.func.isRequired,
-	screamId: PropTypes.string.isRequired,
+	getPost: PropTypes.func.isRequired,
+	postId: PropTypes.string.isRequired,
 	userHandle: PropTypes.string.isRequired,
-	scream: PropTypes.object.isRequired,
+	post: PropTypes.object.isRequired,
 	UI: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-	scream: state.data.scream,
+	post: state.data.post,
 	UI: state.UI,
 });
 
 const mapActionsToProps = {
-	getScream,
+	getPost,
 	clearErrors,
 };
 
 export default connect(
 	mapStateToProps,
 	mapActionsToProps
-)(withStyles(styles)(ScreamDialog));
+)(withStyles(styles)(PostDialog));

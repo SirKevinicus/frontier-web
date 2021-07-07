@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 // Components
 import MyButton from "../../util/MyButton";
-import PostScream from "../scream/PostScream";
+import SubmitPost from "../post/SubmitPost";
 import Notifications from "./Notifications";
 
 // Redux
@@ -26,7 +26,7 @@ export class Navbar extends Component {
 				<Toolbar className="nav-container">
 					{authenticated ? (
 						<Fragment>
-							<PostScream />
+							<SubmitPost />
 							<Link to="/">
 								<MyButton tip="Home">
 									<HomeIcon />
