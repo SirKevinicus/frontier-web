@@ -5,6 +5,7 @@ import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import themeFile from "./util/theme";
 import jwtDecode from "jwt-decode";
+
 // Redux
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -21,6 +22,12 @@ import user from "./pages/user";
 import Navbar from "./components/layout/Navbar";
 import AuthRoute from "./util/AuthRoute";
 import axios from "axios";
+
+// Mui
+import CssBaseline from "@material-ui/core/CssBaseline";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import Container from "@material-ui/core/Container";
+import Button from "@material-ui/core/Button";
 
 // Theme
 const theme = createMuiTheme(themeFile);
@@ -41,14 +48,28 @@ if (token) {
 	}
 }
 
-class App extends Component {
-	render() {
-		return (
-			<MuiThemeProvider theme={theme}>
-				<Provider store={store}>
-					<Router>
+const navbarWidth = 300;
+
+const useStyles = makeStyles((theme) => ({
+	root: {
+		display: "flex",
+	},
+	appContainer: {
+		marginTop: 20,
+	},
+}));
+
+function App() {
+	const classes = useStyles();
+
+	return (
+		<MuiThemeProvider theme={theme}>
+			<CssBaseline />
+			<Provider store={store}>
+				<Router>
+					<div className={classes.root}>
 						<Navbar />
-						<div className="container">
+						<Container fixed className={classes.appContainer}>
 							<Switch>
 								<Route exact path="/" component={home} />
 								<AuthRoute exact path="/login" component={login} />
@@ -60,12 +81,12 @@ class App extends Component {
 									component={user}
 								/>
 							</Switch>
-						</div>
-					</Router>
-				</Provider>
-			</MuiThemeProvider>
-		);
-	}
+						</Container>
+					</div>
+				</Router>
+			</Provider>
+		</MuiThemeProvider>
+	);
 }
 
 export default App;

@@ -1,11 +1,22 @@
+const backgroundWhite = "#f3eae5";
+
+// primary colors
+const green = "#93BCA8";
+
+// color bank
+const weirdPink = "#94778B";
+
 const theme = {
 	palette: {
 		primary: {
-			main: "#a5a58d",
+			main: green,
 			contrastText: "#fff",
 		},
 		secondary: {
 			main: "#ddbea9",
+		},
+		background: {
+			default: backgroundWhite,
 		},
 	},
 	spreadThis: {
