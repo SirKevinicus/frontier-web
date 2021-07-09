@@ -15,6 +15,8 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 
 // Icons
 import AddIcon from "@material-ui/icons/Add";
@@ -36,6 +38,11 @@ const styles = (theme) => ({
 		position: "absolute",
 		left: "90%",
 		top: "6%",
+	},
+	buttonContainer: {
+		display: "flex",
+		alignItems: "center",
+		width: "100%",
 	},
 });
 
@@ -88,9 +95,12 @@ class SubmitPost extends Component {
 		} = this.props;
 		return (
 			<Fragment>
-				<MyButton tip="Create Post" onClick={this.handleOpen}>
-					<AddIcon color="primary" />
-				</MyButton>
+				<div className={classes.buttonContainer} onClick={this.handleOpen}>
+					<ListItemIcon>
+						<AddIcon color="primary" />
+					</ListItemIcon>
+					<ListItemText primary="Post" />
+				</div>
 
 				<Dialog
 					open={this.state.open}

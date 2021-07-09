@@ -9,17 +9,24 @@ import { connect } from "react-redux";
 import { markNotificationsRead } from "../../redux/actions/userActions";
 
 // MUI
+import withStyles from "@material-ui/core/styles/withStyles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Badge from "@material-ui/core/Badge";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 
 // ICONS
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ChatIcon from "@material-ui/icons/Chat";
+
+const styles = (theme) => ({
+	...theme.spreadThis,
+});
 
 class Notifications extends Component {
 	state = {
@@ -38,6 +45,8 @@ class Notifications extends Component {
 		this.props.markNotificationsRead(unreadNotificationsIds);
 	};
 	render() {
+		const classes = this.props;
+
 		dayjs.extend(relativeTime);
 		const notifications = this.props.notifications;
 		const anchorEl = this.state.anchorEl;
@@ -92,15 +101,10 @@ class Notifications extends Component {
 
 		return (
 			<Fragment>
-				<Tooltip placement="top" title="Notifications">
-					<IconButton
-						aria-owns={anchorEl ? "simple-menu" : undefined}
-						aria-haspopup="true"
-						onClick={this.handleOpen}
-					>
-						{notificationsIcon}
-					</IconButton>
-				</Tooltip>
+				<ListItemIcon onClick={this.handleOpen}>
+					{notificationsIcon}
+				</ListItemIcon>
+				<ListItemText primary="Notifications" />
 				<Menu
 					anchorEl={anchorEl}
 					open={Boolean(anchorEl)}
@@ -124,5 +128,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, { markNotificationsRead })(
-	Notifications
+	withStyles(styles)(Notifications)
 );
