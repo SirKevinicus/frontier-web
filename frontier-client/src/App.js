@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	withRouter,
+} from "react-router-dom";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import themeFile from "./util/theme";
@@ -48,8 +53,6 @@ if (token) {
 	}
 }
 
-const navbarWidth = 300;
-
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
@@ -59,34 +62,34 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function App() {
+const App = ({ location }) => {
 	const classes = useStyles();
 
 	return (
 		<MuiThemeProvider theme={theme}>
 			<CssBaseline />
 			<Provider store={store}>
-				<Router>
-					<div className={classes.root}>
+				<div className={classes.root}>
+					{location.pathname != "/login" && location.pathname != "/signup" && (
 						<Navbar />
-						<Container fixed className={classes.appContainer}>
-							<Switch>
-								<Route exact path="/" component={home} />
-								<AuthRoute exact path="/login" component={login} />
-								<AuthRoute exact path="/signup" component={signup} />
-								<Route exact path="/users/:handle" component={user} />
-								<Route
-									exact
-									path="/users/:handle/scream/:screamId"
-									component={user}
-								/>
-							</Switch>
-						</Container>
-					</div>
-				</Router>
+					)}
+					<Container fixed className={classes.appContainer}>
+						<Switch>
+							<AuthRoute exact path="/login" component={login} />
+							<AuthRoute exact path="/signup" component={signup} />
+							<Route exact path="/" component={home} />
+							<Route exact path="/users/:handle" component={user} />
+							<Route
+								exact
+								path="/users/:handle/scream/:screamId"
+								component={user}
+							/>
+						</Switch>
+					</Container>
+				</div>
 			</Provider>
 		</MuiThemeProvider>
 	);
-}
+};
 
-export default App;
+export default withRouter(App);

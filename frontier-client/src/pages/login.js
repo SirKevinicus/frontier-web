@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import AppIcon from "../images/frontier-logo.png";
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import { loginUser } from "../redux/actions/userActions";
 
 // MUI
 import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
 import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -17,6 +18,13 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 const styles = (theme) => ({
 	...theme.spreadThis,
+	loginForm: {
+		textAlign: "center",
+		padding: "0 50px",
+	},
+	button: {
+		margin: "20px auto",
+	},
 });
 
 export class login extends Component {
@@ -56,67 +64,63 @@ export class login extends Component {
 		const { errors } = this.state;
 
 		return (
-			<Grid container className={classes.form}>
-				<Grid item sm />
-				<Grid item sm>
-					<img
-						src={AppIcon}
-						alt="frontier-logo"
-						className={classes.frontierLogo}
+			<Container maxWidth="sm" className={classes.loginForm}>
+				<img
+					src={AppIcon}
+					alt="frontier-logo"
+					className={classes.frontierLogo}
+				/>
+				<Typography variant="h2" className={classes.pageTitle}>
+					Login
+				</Typography>
+				<form noValidate onSubmit={this.handleSubmit}>
+					<TextField
+						id="email"
+						name="email"
+						type="email"
+						label="Email"
+						className={classes.textField}
+						helperText={errors.email}
+						error={errors.email ? true : false}
+						value={this.state.email}
+						onChange={this.handleChange}
+						fullWidth
 					/>
-					<Typography variant="h2" className={classes.pageTitle}>
-						Login
-					</Typography>
-					<form noValidate onSubmit={this.handleSubmit}>
-						<TextField
-							id="email"
-							name="email"
-							type="email"
-							label="Email"
-							className={classes.textField}
-							helperText={errors.email}
-							error={errors.email ? true : false}
-							value={this.state.email}
-							onChange={this.handleChange}
-							fullWidth
-						/>
-						<TextField
-							id="password"
-							name="password"
-							type="password"
-							label="Password"
-							className={classes.textField}
-							value={this.state.password}
-							onChange={this.handleChange}
-							helperText={errors.password}
-							error={errors.password ? true : false}
-							fullWidth
-						/>
-						{errors.general && (
-							<Typography variant="body2" className={classes.customError}>
-								{errors.general}
-							</Typography>
+					<TextField
+						id="password"
+						name="password"
+						type="password"
+						label="Password"
+						className={classes.textField}
+						value={this.state.password}
+						onChange={this.handleChange}
+						helperText={errors.password}
+						error={errors.password ? true : false}
+						fullWidth
+					/>
+					{errors.general && (
+						<Typography variant="body2" className={classes.customError}>
+							{errors.general}
+						</Typography>
+					)}
+					<Button
+						type="submit"
+						variant="contained"
+						color="primary"
+						className={classes.button}
+						disabled={loading}
+					>
+						Submit
+						{loading && (
+							<CircularProgress size={30} className={classes.progress} />
 						)}
-						<Button
-							type="submit"
-							variant="contained"
-							color="primary"
-							className={classes.button}
-							disabled={loading}
-						>
-							Submit
-							{loading && (
-								<CircularProgress size={30} className={classes.progress} />
-							)}
-						</Button>
-						<br></br>
-						<small>
-							Don't have an account? <Link to="/signup">Sign up</Link>
-						</small>
-					</form>
-				</Grid>
-				<Grid item sm />
-			</Grid>
+					</Button>
+					<br></br>
+					<small>
+						Don't have an account? <Link to="/signup">Sign up</Link>
+					</small>
+				</form>
+			</Container>
 		);
 	}
 }
