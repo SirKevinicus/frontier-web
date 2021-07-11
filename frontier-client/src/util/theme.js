@@ -7,7 +7,7 @@ const theme = {
 	palette: {
 		primary: {
 			main: green,
-			contrastText: "#fff",
+			contrastText: "#F3EAE5",
 		},
 		secondary: {
 			main: "#ddbea9",
@@ -19,6 +19,9 @@ const theme = {
 	spreadThis: {
 		frontierLogo: {
 			maxWidth: 100,
+		},
+		navLogo: {
+			color: backgroundWhite,
 		},
 		typography: {
 			useNextVariants: true,

@@ -26,6 +26,11 @@ import ChatIcon from "@material-ui/icons/Chat";
 
 const styles = (theme) => ({
 	...theme.spreadThis,
+	navItemText: {
+		color: theme.palette.background.default,
+		fontSize: "1.3rem",
+		fontWeight: "bold",
+	},
 });
 
 class Notifications extends Component {
@@ -45,7 +50,7 @@ class Notifications extends Component {
 		this.props.markNotificationsRead(unreadNotificationsIds);
 	};
 	render() {
-		const classes = this.props;
+		const { classes } = this.props;
 
 		dayjs.extend(relativeTime);
 		const notifications = this.props.notifications;
@@ -61,12 +66,16 @@ class Notifications extends Component {
 							}
 							color="secondary"
 						>
-							<NotificationsIcon />
+							<NotificationsIcon fontSize="large" className={classes.navLogo} />
 						</Badge>
 				  ))
-				: (notificationsIcon = <NotificationsIcon />);
+				: (notificationsIcon = (
+						<NotificationsIcon fontSize="large" className={classes.navLogo} />
+				  ));
 		} else {
-			notificationsIcon = <NotificationsIcon />;
+			notificationsIcon = (
+				<NotificationsIcon fontSize="large" className={classes.navLogo} />
+			);
 		}
 
 		let notificationsMarkup =
@@ -104,7 +113,10 @@ class Notifications extends Component {
 				<ListItemIcon onClick={this.handleOpen}>
 					{notificationsIcon}
 				</ListItemIcon>
-				<ListItemText primary="Notifications" />
+				<ListItemText
+					primary="Notifications"
+					classes={{ primary: classes.navItemText }}
+				/>
 				<Menu
 					anchorEl={anchorEl}
 					open={Boolean(anchorEl)}

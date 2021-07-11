@@ -8,6 +8,7 @@ import SubmitPost from "../post/SubmitPost";
 import Notifications from "./Notifications";
 
 // Icons
+import { ReactComponent as FrontierIcon } from "../../assets/img/Fronter_Logo_Min.svg";
 import { ReactComponent as HomeIcon } from "../../assets/img/home.svg";
 import MenuIcon from "@material-ui/icons/Menu";
 
@@ -47,41 +48,74 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 99,
 		margin: 20,
 	},
+	navMenu: {
+		marginTop: "20px",
+	},
+	navbarItem: {
+		margin: "10px 0px",
+	},
+	navItemText: {
+		fontSize: "1.3rem",
+		fontWeight: "bold",
+	},
 }));
 
 function NavbarContent({ authenticated }) {
+	const classes = useStyles();
+	const theme = useTheme();
+
 	return (
-		<List>
-			<Link to="/">
-				<ListItem button>
+		<Fragment>
+			<List>
+				<ListItem>
 					<ListItemIcon>
-						<SvgIcon>
+						<SvgIcon
+							fontSize="large"
+							style={{ color: theme.palette.secondary }}
+						>
+							<FrontierIcon />
+						</SvgIcon>
+					</ListItemIcon>
+				</ListItem>
+			</List>
+
+			<List className={classes.navMenu}>
+				<ListItem button component={Link} to="/" className={classes.navbarItem}>
+					<ListItemIcon>
+						<SvgIcon
+							fontSize="large"
+							style={{ color: theme.palette.background.default }}
+						>
 							<HomeIcon />
 						</SvgIcon>
 					</ListItemIcon>
-					<ListItemText primary="Home" />
+					<ListItemText
+						primary="Home"
+						style={{ color: theme.palette.background.default }}
+						classes={{ primary: classes.navItemText }}
+					/>
 				</ListItem>
-			</Link>
-			{authenticated ? (
-				<Fragment>
-					<ListItem button>
-						<SubmitPost />
-					</ListItem>
-					<ListItem button>
-						<Notifications />
-					</ListItem>
-				</Fragment>
-			) : (
-				<Fragment>
-					<Button color="inherit" component={Link} to="/login">
-						<b>Login</b>
-					</Button>
-					<Button color="inherit" component={Link} to="/signup">
-						Signup
-					</Button>
-				</Fragment>
-			)}
-		</List>
+				{authenticated ? (
+					<Fragment>
+						<ListItem button className={classes.navbarItem}>
+							<SubmitPost />
+						</ListItem>
+						<ListItem button className={classes.navbarItem}>
+							<Notifications />
+						</ListItem>
+					</Fragment>
+				) : (
+					<Fragment>
+						<Button color="inherit" component={Link} to="/login">
+							<b>Login</b>
+						</Button>
+						<Button color="inherit" component={Link} to="/signup">
+							Signup
+						</Button>
+					</Fragment>
+				)}
+			</List>
+		</Fragment>
 	);
 }
 
@@ -112,7 +146,7 @@ function Navbar({ authenticated }) {
 					<NavbarContent authenticated={authenticated} />
 				</Drawer>
 				<IconButton
-					color="primary"
+					color="inherit"
 					aria-label="open drawer"
 					edge="start"
 					onClick={handleDrawerToggle}

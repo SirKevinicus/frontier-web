@@ -19,6 +19,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 
 // Icons
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
 import { DialogContent } from "@material-ui/core";
@@ -43,6 +44,11 @@ const styles = (theme) => ({
 		display: "flex",
 		alignItems: "center",
 		width: "100%",
+	},
+	navItemText: {
+		color: theme.palette.background.default,
+		fontSize: "1.3rem",
+		fontWeight: "bold",
 	},
 });
 
@@ -97,9 +103,12 @@ class SubmitPost extends Component {
 			<Fragment>
 				<div className={classes.buttonContainer} onClick={this.handleOpen}>
 					<ListItemIcon>
-						<AddIcon color="primary" />
+						<AddIcon fontSize="large" className={classes.navLogo} />
 					</ListItemIcon>
-					<ListItemText primary="Post" />
+					<ListItemText
+						primary="Post"
+						classes={{ primary: classes.navItemText }}
+					/>
 				</div>
 
 				<Dialog
