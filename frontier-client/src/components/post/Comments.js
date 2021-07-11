@@ -13,6 +13,7 @@ const styles = (theme) => ({
 	commentImage: {
 		maxWidth: "100%",
 		height: 100,
+		width: 100,
 		objectFit: "cover",
 		borderRadius: "50%",
 	},

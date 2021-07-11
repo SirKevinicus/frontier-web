@@ -15,27 +15,38 @@ import PostDialog from "./PostDialog";
 
 // MUI
 import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardActions from "@material-ui/core/CardActions";
+import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 // Icons
 import ChatIcon from "@material-ui/icons/Chat";
 
-const styles = {
+const styles = (theme) => ({
+	...theme.spreadThis,
 	card: {
 		position: "relative",
-		display: "flex",
 		marginBottom: 20,
+		padding: 10,
 	},
-	image: {
-		minWidth: 200,
+	avatar: {
+		width: theme.spacing(6),
+		height: theme.spacing(6),
 	},
 	content: {
-		padding: 25,
+		margin: 0,
+		padding: "10px 20px 10px",
 		objectFit: "cover",
 	},
-};
+	userHandle: {
+		fontWeight: 3,
+	},
+});
 
 class Post extends Component {
 	render() {
@@ -65,29 +76,41 @@ class Post extends Component {
 
 		return (
 			<Card className={classes.card}>
-				<CardMedia
-					image={userImage}
-					title="Profile Image"
-					className={classes.image}
+				<CardHeader
+					avatar={
+						<Avatar
+							aria-label="recipe"
+							className={classes.avatar}
+							src={userImage}
+							component={Link}
+							to={`/users/${userHandle}`}
+						></Avatar>
+					}
+					action={
+						<div>
+							{deleteButton}
+							<IconButton aria-label="settings">
+								<MoreVertIcon />
+							</IconButton>
+						</div>
+					}
+					title={
+						<Link to={`/users/${userHandle}`}>
+							<Typography
+								variant="h6"
+								className={classes.userHandle}
+								color="textPrimary"
+							>
+								{userHandle}
+							</Typography>
+						</Link>
+					}
+					subheader={dayjs(createdAt).fromNow()}
 				/>
 				<CardContent className={classes.content}>
-					<Typography
-						variant="h5"
-						component={Link}
-						to={`/users/${userHandle}`}
-						color="primary"
-					>
-						{userHandle}
-					</Typography>
-
-					{deleteButton}
-
-					<Typography variant="body2" color="textSecondary">
-						{dayjs(createdAt).fromNow()}
-					</Typography>
-
 					<Typography variant="body1">{body}</Typography>
-
+				</CardContent>
+				<CardActions>
 					<LikeButton postId={postId} />
 					<span>{likeCount} Likes</span>
 
@@ -100,7 +123,7 @@ class Post extends Component {
 						userHandle={userHandle}
 						openDialog={this.props.openDialog}
 					/>
-				</CardContent>
+				</CardActions>
 			</Card>
 		);
 	}

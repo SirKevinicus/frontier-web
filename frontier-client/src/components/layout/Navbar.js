@@ -104,16 +104,7 @@ function NavbarContent({ authenticated }) {
 							<Notifications />
 						</ListItem>
 					</Fragment>
-				) : (
-					<Fragment>
-						<Button color="inherit" component={Link} to="/login">
-							<b>Login</b>
-						</Button>
-						<Button color="inherit" component={Link} to="/signup">
-							Signup
-						</Button>
-					</Fragment>
-				)}
+				) : null}
 			</List>
 		</Fragment>
 	);

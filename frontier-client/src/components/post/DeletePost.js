@@ -18,11 +18,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DeleteIcon from "@material-ui/icons/DeleteOutline";
 
 const styles = {
-	deleteButton: {
-		position: "absolute",
-		left: "90%",
-		top: "10%",
-	},
+	deleteButton: {},
 };
 
 class DeletePost extends Component {

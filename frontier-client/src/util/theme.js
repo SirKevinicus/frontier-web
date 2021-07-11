@@ -16,6 +16,9 @@ const theme = {
 			default: backgroundWhite,
 		},
 	},
+	shape: {
+		borderRadius: 16,
+	},
 	spreadThis: {
 		frontierLogo: {
 			maxWidth: 100,
