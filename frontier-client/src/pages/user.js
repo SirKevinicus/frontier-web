@@ -15,6 +15,12 @@ import ProfileSkeleton from "../util/ProfileSkeleton";
 
 // MUI
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+
+const styles = (theme) => ({
+	...theme.spreadThis,
+});
 
 class user extends Component {
 	state = {
@@ -41,6 +47,7 @@ class user extends Component {
 	}
 
 	render() {
+		const { classes } = this.props;
 		const { posts, loading } = this.props.data;
 		const { postIdParam } = this.state;
 
@@ -50,8 +57,12 @@ class user extends Component {
 		// 4th case: display all posts for the user, and open the post (input through the postIdParam) using a dialog
 		const postsMarkup = loading ? (
 			<PostSkeleton />
-		) : posts === null ? (
-			<p>No posts for this user</p>
+		) : posts === null || posts.length == 0 ? (
+			<Paper className={classes.paper}>
+				<Typography variant="body1">
+					This user doesn't have any posts!
+				</Typography>
+			</Paper>
 		) : !postIdParam ? (
 			posts.map((post) => <Post key={post.postId} post={post} />)
 		) : (
@@ -88,4 +99,6 @@ const mapStateToProps = (state) => ({
 	data: state.data,
 });
 
-export default connect(mapStateToProps, { getUserData })(user);
+export default connect(mapStateToProps, { getUserData })(
+	withStyles(styles)(user)
+);

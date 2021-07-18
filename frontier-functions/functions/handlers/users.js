@@ -26,6 +26,8 @@ exports.signup = (req, res) => {
 
 	const noImg = "no-img.webp";
 
+	const defaultProfilePic = `https://picsum.photos/seed/${newUser.handle}/300`;
+
 	let token, userId;
 	db.doc(`/users/${newUser.handle}`)
 		.get()
@@ -48,7 +50,8 @@ exports.signup = (req, res) => {
 				handle: newUser.handle,
 				email: newUser.email,
 				createdAt: new Date().toISOString(),
-				imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,
+				imageUrl: defaultProfilePic,
+				//imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,
 				userId: userId,
 			};
 			return db.doc(`/users/${newUser.handle}`).set(userCredentials); // creates the document in the db

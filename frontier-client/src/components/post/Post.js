@@ -100,6 +100,7 @@ class Post extends Component {
 								variant="h6"
 								className={classes.userHandle}
 								color="textPrimary"
+								display="inline"
 							>
 								{userHandle}
 							</Typography>
@@ -118,6 +119,7 @@ class Post extends Component {
 						<ChatIcon color="primary" />
 					</MyButton>
 					<span>{commentCount} Comments</span>
+
 					<PostDialog
 						postId={postId}
 						userHandle={userHandle}
