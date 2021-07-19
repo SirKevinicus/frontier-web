@@ -18,23 +18,30 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 // Icons
 import CloseIcon from "@material-ui/icons/Close";
 import ChatIcon from "@material-ui/icons/Chat";
+import { Fragment } from "react-is";
+import { Divider } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	...theme.spreadThis,
 	profileImage: {
 		maxWidth: 200,
-		width: 200,
-		height: 200,
+		width: theme.spacing(8),
+		height: theme.spacing(8),
 		borderRadius: "50%",
 		objectFit: "cover",
+		marginRight: 20,
 	},
 	dialogContent: {
 		padding: 20,
+	},
+	divider: {
+		width: "100%",
 	},
 	closeButton: {
 		position: "absolute",
@@ -48,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: "center",
 		marginTop: 50,
 		marginBottom: 50,
+	},
+	body: {
+		marginBottom: 20,
 	},
 }));
 
@@ -78,29 +88,30 @@ export default function PostDialog(props) {
 			<CircularProgress size={200} thickness={2} />
 		</div>
 	) : (
-		<Grid container spacing={16}>
-			<Grid item sm={5}>
-				<img src={userImage} alt="Profile" className={classes.profileImage} />
-			</Grid>
-			<Grid item sm={7}>
-				<Typography
-					component={Link}
-					color="primary"
-					variant="h5"
-					to={`/users/${userHandle}`}
-				>
-					@{userHandle}
+		<Fragment>
+			<DialogTitle>
+				{
+					<Fragment>
+						<img
+							src={userImage}
+							alt="Profile"
+							className={classes.profileImage}
+						/>
+						<Typography
+							component={Link}
+							color="primary"
+							variant="body1"
+							to={`/users/${userHandle}`}
+						>
+							@{userHandle} • {dayjs(createdAt).format("h:mm a, MMMM DD YYYY")}
+						</Typography>
+					</Fragment>
+				}
+			</DialogTitle>
+			<DialogContent>
+				<Typography variant="body1" className={classes.body}>
+					{body}
 				</Typography>
-
-				<hr className={classes.invisibleSeparator} />
-
-				<Typography variant="body2" color="textSecondary">
-					{dayjs(createdAt).format("h:mm a, MMMM DD YYYY")}
-				</Typography>
-
-				<hr className={classes.invisibleSeparator} />
-
-				<Typography variant="body1">{body}</Typography>
 
 				<LikeButton postId={postId} />
 				<span>{likeCount} Likes</span>
@@ -109,12 +120,17 @@ export default function PostDialog(props) {
 					<ChatIcon color="primary" />
 				</MyButton>
 				<span>{commentCount} Comments</span>
-			</Grid>
 
-			<hr className={classes.visibleSeparator} />
-			<CommentForm postId={postId} />
-			<Comments comments={comments} />
-		</Grid>
+				<Divider
+					className={classes.visibleSeparator}
+					variant="fullWidth"
+					light
+				/>
+
+				<CommentForm postId={postId} />
+				<Comments comments={comments} />
+			</DialogContent>
+		</Fragment>
 	);
 
 	return (

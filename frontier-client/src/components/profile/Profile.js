@@ -11,6 +11,10 @@ import MyButton from "../../util/MyButton";
 import ProfileSkeleton from "../../util/ProfileSkeleton";
 
 // MUI
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardHeader from "@material-ui/core/CardHeader";
+import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import MuiLink from "@material-ui/core/Link";
@@ -28,22 +32,13 @@ import { connect } from "react-redux";
 
 const styles = (theme) => ({
 	...theme.spreadThis,
+	avatar: {
+		width: theme.spacing(6),
+		height: theme.spacing(6),
+	},
 });
 
 class Profile extends Component {
-	handleImageChange = (event) => {
-		const image = event.target.files[0];
-		const formData = new FormData();
-		formData.append("image", image, image.name);
-		this.props.uploadImage(formData);
-	};
-
-	// when the edit button is clicked, this is called and finds the input field and clicks it
-	handleEditPicture = () => {
-		const fileInput = document.getElementById("imageInput");
-		fileInput.click();
-	};
-
 	handleLogout = () => {
 		this.props.logoutUser();
 	};
@@ -60,26 +55,19 @@ class Profile extends Component {
 
 		let profileMarkup = !loading ? (
 			authenticated ? (
-				<Paper className={classes.paper}>
-					<div className={classes.profile}>
-						<div className="image-wrapper">
-							<img className="profile-image" src={imageUrl} alt="profile" />
-							<input
-								type="file"
-								id="imageInput"
-								hidden="hidden"
-								onChange={this.handleImageChange}
+				<Card className={classes.paper}>
+					<CardHeader
+						avatar={
+							<Avatar
+								aria-label="profile-image"
+								className={classes.avatar}
+								src={imageUrl}
+								component={Link}
+								className={classes.avatar}
+								to={`/users/${handle}`}
 							/>
-							<MyButton
-								tip="Edit Profile Picture"
-								onClick={this.handleEditPicture}
-								btnClassName="button"
-							>
-								<EditIcon color="secondary" />
-							</MyButton>
-						</div>
-						<hr />
-						<div className="profile-details">
+						}
+						title={
 							<MuiLink
 								component={Link}
 								to={`/users/${handle}`}
@@ -88,39 +76,26 @@ class Profile extends Component {
 							>
 								@{handle}
 							</MuiLink>
-							<hr />
-							{bio && <Typography variant="body2">{bio}</Typography>}
-							<hr />
-							{location && (
-								<Fragment>
-									<LocationOn color="primary" /> <span>{location}</span>
-									<hr />
-								</Fragment>
-							)}
-							{website && (
-								<Fragment>
-									<LinkIcon color="primary" />
-									<a href={website} target="_blank" rel="noopener noreferrer">
-										{" "}
-										{website}
-									</a>
-									<hr />
-								</Fragment>
-							)}
-							<CalendarToday color="primary" />{" "}
-							<span>Joined {dayjs(createdAt).format("MMM YYYY")}</span>
-						</div>
-						<MyButton tip="Logout" onClick={this.handleLogout}>
-							<KeyboardReturn color="primary" />
-						</MyButton>
-						<EditDetails />
-					</div>
-				</Paper>
+						}
+						subheader={
+							<MuiLink
+								component={Link}
+								to={`/users/${handle}`}
+								color="primary"
+								variant="body1"
+							>
+								@{handle}
+							</MuiLink>
+						}
+						action={
+							<MyButton tip="Logout" onClick={this.handleLogout}>
+								<KeyboardReturn color="primary" />
+							</MyButton>
+						}
+					/>
+				</Card>
 			) : (
 				<Paper className={classes.paper}>
-					<Typography variant="body2" align="center">
-						No Profile Found. Login
-					</Typography>
 					<div className={classes.buttons}>
 						<Button
 							variant="contained"

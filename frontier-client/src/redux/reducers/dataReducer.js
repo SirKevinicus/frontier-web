@@ -52,11 +52,17 @@ export default function dataReducer(state = initialState, action) {
 				...state,
 			};
 		case SUBMIT_COMMENT:
+			let commentIndex = state.posts.findIndex(
+				(post) => post.postId === action.payload.postId
+			);
+			state.posts[commentIndex].commentCount += 1;
+
 			return {
 				...state,
 				post: {
 					...state.post,
 					comments: [action.payload, ...state.post.comments],
+					commentCount: state.post.commentCount + 1,
 				},
 			};
 		case DELETE_POST:

@@ -59,8 +59,8 @@ const theme = {
 		},
 		visibleSeparator: {
 			width: "100%",
-			borderBottom: "1px solid rgba(0,0,0,0.1)",
-			marginBottom: 20,
+			borderBottom: "1px solid rgba(0,0,0,0.04)",
+			margin: "20px 0px",
 		},
 		paper: {
 			padding: 20,
@@ -77,7 +77,7 @@ const theme = {
 			},
 			"& .profile-image": {
 				width: 200,
-				height: 200,
+				height: "auto",
 				objectFit: "cover",
 				maxWidth: "100%",
 				borderRadius: "50%",

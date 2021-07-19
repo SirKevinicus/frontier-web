@@ -74,7 +74,7 @@ const App = ({ location }) => {
 							<Route exact path="/users/:handle" component={user} />
 							<Route
 								exact
-								path="/users/:handle/scream/:screamId"
+								path="/users/:handle/post/:postId"
 								component={user}
 							/>
 						</Switch>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
@@ -114,6 +114,16 @@ export default function Post(props) {
 		dispatch(clearErrors());
 	};
 
+	// If the URL already matches, user.js will pass the openDialog prop to Post.
+	// When received, we need to reopen the post dialog and set the Post in the Redux store.
+	useEffect(() => {
+		function reopenDialog() {
+			setOpen(true);
+			dispatch(getPost(postId));
+		}
+		if (props.openDialog) reopenDialog();
+	}, [props.openDialog, dispatch, postId]);
+
 	const deleteButton =
 		authenticated && userHandle === handle ? (
 			<DeletePost postId={postId} />
@@ -171,7 +181,9 @@ export default function Post(props) {
 				<MyButton tip="comments" onClick={handleClickOpen}>
 					<ChatIcon color="primary" />
 				</MyButton>
-				<span>{commentCount} Comments</span>
+				<span>
+					{commentCount} Comment{commentCount !== 1 ? "s" : null}{" "}
+				</span>
 
 				<PostDialog userHandle={userHandle} open={open} onClose={handleClose} />
 			</CardActions>

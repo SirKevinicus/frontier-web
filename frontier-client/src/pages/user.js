@@ -51,8 +51,8 @@ class user extends Component {
 		const { posts, loading } = this.props.data;
 		const { postIdParam } = this.state;
 
-		// 1st case: if loading, display loading
-		// 2nd case: if there are no posts, display message
+		// 1st case: if loading, display the PostSkeleton
+		// 2nd case: if the user has no posts, display message
 		// 3rd case: if there is not a postIdParam passed through the URL, then display all of the posts for this user
 		// 4th case: display all posts for the user, and open the post (input through the postIdParam) using a dialog
 		const postsMarkup = loading ? (

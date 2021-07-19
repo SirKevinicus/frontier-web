@@ -114,7 +114,7 @@ exports.commentOnPost = (req, res) => {
 			return db.collection("comments").add(newComment);
 		})
 		.then(() => {
-			return res.json({ newComment });
+			return res.json(newComment);
 		})
 		.catch((err) => {
 			console.error(err);

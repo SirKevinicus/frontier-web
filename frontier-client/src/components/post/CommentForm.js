@@ -8,6 +8,7 @@ import { submitComment } from "../../redux/actions/dataActions";
 
 // MUI
 import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
@@ -52,23 +53,23 @@ export class CommentForm extends Component {
 						name="body"
 						type="text"
 						label="Comment on Post"
+						variant="outlined"
 						error={errors.comment ? true : false}
 						helperText={errors.comment}
 						value={this.state.body}
 						onChange={this.handleChange}
 						fullWidth
 						className={classes.textField}
+						inputProps={{
+							autoComplete: "off",
+						}}
 					/>
-					<Button
-						type="submit"
-						variant="contained"
-						color="primary"
-						className={classes.button}
-					>
-						Submit
-					</Button>
 				</form>
-				<hr className={classes.visibleSeparator} />
+				<Divider
+					variant="fullWidth"
+					light
+					className={classes.visibleSeparator}
+				/>
 			</Grid>
 		) : null;
 

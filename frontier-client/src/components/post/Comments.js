@@ -1,77 +1,30 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { Link } from "react-router-dom";
-import dayjs from "dayjs";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
-// MUI
+import Comment from "./Comment";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
 	...theme.spreadThis,
-	commentImage: {
-		maxWidth: "100%",
-		height: 100,
-		width: 100,
-		objectFit: "cover",
-		borderRadius: "50%",
-	},
-	commentData: {
-		marginLeft: 20,
-	},
-});
+}));
 
-class Comments extends Component {
-	render() {
-		const { classes, comments } = this.props;
-		return (
-			<Grid container>
-				{comments.map((comment, index) => {
-					const { body, createdAt, userImage, userHandle } = comment;
-					return (
-						<Fragment key={createdAt}>
-							<Grid item sm={12}>
-								<Grid container>
-									<Grid item sm={2}>
-										<img
-											src={userImage}
-											alt="comment"
-											className={classes.commentImage}
-										/>
-									</Grid>
-									<Grid item sm={9}>
-										<div className={classes.commentData}>
-											<Typography
-												variant="h5"
-												component={Link}
-												to={`/users/${userHandle}`}
-												color="primary"
-											>
-												@{userHandle}
-											</Typography>
-											<Typography variant="body2" color="textSecondary">
-												{dayjs(createdAt).format("h:mm a, MMMM DD YYYY")}
-											</Typography>
-											<hr className={classes.invisibleSeparator} />
-											<Typography variant="body1">{body}</Typography>
-										</div>
-									</Grid>
-								</Grid>
-							</Grid>
-							{index !== comments.length - 1 && (
-								<hr className={classes.invisibleSeparator} />
-							)}
-						</Fragment>
-					);
-				})}
-			</Grid>
-		);
-	}
+export default function Comments(props) {
+	const classes = useStyles();
+	const { comments } = props;
+
+	const content = props.comments.map((comment, index) => (
+		<Grid item sm={12} key={comment.createdAt}>
+			<Comment comment={comment} />
+			{index !== comments.length - 1 && (
+				<hr className={classes.invisibleSeparator} />
+			)}
+		</Grid>
+	));
+
+	return <Grid container>{content}</Grid>;
 }
 
 Comments.propTypes = {
-	comments: PropTypes.array.isRequired,
+	comments: PropTypes.array,
 };
-
-export default withStyles(styles)(Comments);
