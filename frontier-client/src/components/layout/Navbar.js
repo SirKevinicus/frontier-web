@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 // Components
-import MyButton from "../../util/MyButton";
 import SubmitPost from "../post/SubmitPost";
 import Notifications from "./Notifications";
 
@@ -25,9 +24,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItem from "@material-ui/core/ListItem";
 import SvgIcon from "@material-ui/core/SvgIcon";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import { render } from "@testing-library/react";
 
 const drawerWidth = 240;
 

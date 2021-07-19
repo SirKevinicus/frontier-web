@@ -19,7 +19,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 
 // Icons
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
 import { DialogContent } from "@material-ui/core";

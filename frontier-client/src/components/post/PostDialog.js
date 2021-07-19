@@ -1,12 +1,10 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 
 // Redux
-import { connect } from "react-redux";
-import { getPost, clearErrors } from "../../redux/actions/dataActions";
+import { useSelector } from "react-redux";
 
 // Components
 import MyButton from "../../util/MyButton";
@@ -15,6 +13,7 @@ import Comments from "./Comments";
 import CommentForm from "./CommentForm";
 
 // MUI
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
@@ -24,9 +23,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 // Icons
 import CloseIcon from "@material-ui/icons/Close";
 import ChatIcon from "@material-ui/icons/Chat";
-import UnfoldMore from "@material-ui/icons/UnfoldMore";
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
 	...theme.spreadThis,
 	profileImage: {
 		maxWidth: 200,
@@ -51,149 +49,92 @@ const styles = (theme) => ({
 		marginTop: 50,
 		marginBottom: 50,
 	},
-});
+}));
 
-class PostDialog extends Component {
-	state = {
-		open: false,
-		oldPath: "",
-		newPath: "",
+export default function PostDialog(props) {
+	const classes = useStyles();
+	const { onClose, open } = props;
+
+	// GET POST FROM REDUX STORE. The post is set in the store in the Post's onClickOpen action hook
+	const {
+		postId,
+		body,
+		createdAt,
+		likeCount,
+		commentCount,
+		userImage,
+		userHandle,
+		comments,
+	} = useSelector((state) => state.data.post);
+
+	const { loading } = useSelector((state) => state.UI);
+
+	const handleClose = () => {
+		onClose();
 	};
 
-	componentDidMount() {
-		if (this.props.openDialog) this.handleOpen();
-	}
-
-	handleOpen = () => {
-		let oldPath = window.location.pathname;
-		const { userHandle, postId } = this.props;
-		const newPath = `/users/${userHandle}/post/${postId}`;
-
-		// if url is pasted in (oldPath will be null), set the old path to the user's page
-		if (oldPath === newPath) oldPath = `/users/${userHandle}`;
-
-		window.history.pushState(null, null, newPath);
-
-		this.setState({ open: true, oldPath, newPath });
-		this.props.getPost(this.props.postId);
-	};
-	handleClose = () => {
-		window.history.pushState(null, null, this.state.oldPath);
-		this.setState({ open: false });
-		this.props.clearErrors();
-	};
-
-	render() {
-		const {
-			classes,
-			post: {
-				postId,
-				body,
-				createdAt,
-				likeCount,
-				commentCount,
-				userImage,
-				userHandle,
-				comments,
-			},
-			UI: { loading },
-		} = this.props;
-
-		const dialogMarkup = loading ? (
-			<div className={classes.spinnerDiv}>
-				<CircularProgress size={200} thickness={2} />
-			</div>
-		) : (
-			<Grid container spacing={16}>
-				<Grid item sm={5}>
-					<img src={userImage} alt="Profile" className={classes.profileImage} />
-				</Grid>
-				<Grid item sm={7}>
-					<Typography
-						component={Link}
-						color="primary"
-						variant="h5"
-						to={`/users/${userHandle}`}
-					>
-						@{userHandle}
-					</Typography>
-
-					<hr className={classes.invisibleSeparator} />
-
-					<Typography variant="body2" color="textSecondary">
-						{dayjs(createdAt).format("h:mm a, MMMM DD YYYY")}
-					</Typography>
-
-					<hr className={classes.invisibleSeparator} />
-
-					<Typography variant="body1">{body}</Typography>
-
-					<LikeButton postId={postId} />
-					<span>{likeCount} Likes</span>
-
-					<MyButton tip="comments">
-						<ChatIcon color="primary" />
-					</MyButton>
-					<span>{commentCount} Comments</span>
-				</Grid>
-
-				<hr className={classes.visibleSeparator} />
-				<CommentForm postId={postId} />
-				<Comments comments={comments} />
+	const dialogMarkup = loading ? (
+		<div className={classes.spinnerDiv}>
+			<CircularProgress size={200} thickness={2} />
+		</div>
+	) : (
+		<Grid container spacing={16}>
+			<Grid item sm={5}>
+				<img src={userImage} alt="Profile" className={classes.profileImage} />
 			</Grid>
-		);
+			<Grid item sm={7}>
+				<Typography
+					component={Link}
+					color="primary"
+					variant="h5"
+					to={`/users/${userHandle}`}
+				>
+					@{userHandle}
+				</Typography>
 
-		return (
-			<Fragment>
-				<MyButton
-					onClick={this.handleOpen}
-					tip="Expand Post"
-					tipClassName={classes.expandButton}
-				>
-					<UnfoldMore color="primary" />
+				<hr className={classes.invisibleSeparator} />
+
+				<Typography variant="body2" color="textSecondary">
+					{dayjs(createdAt).format("h:mm a, MMMM DD YYYY")}
+				</Typography>
+
+				<hr className={classes.invisibleSeparator} />
+
+				<Typography variant="body1">{body}</Typography>
+
+				<LikeButton postId={postId} />
+				<span>{likeCount} Likes</span>
+
+				<MyButton tip="comments">
+					<ChatIcon color="primary" />
 				</MyButton>
-				<Dialog
-					open={this.state.open}
-					onClose={this.handleClose}
-					fullWidth
-					maxWidth="sm"
-				>
-					<MyButton
-						tip="Close"
-						onClick={this.handleClose}
-						tipClassName={classes.closeButton}
-					>
-						<CloseIcon />
-					</MyButton>
-					<DialogContent className={classes.dialogContent}>
-						{dialogMarkup}
-					</DialogContent>
-				</Dialog>
-			</Fragment>
-		);
-	}
+				<span>{commentCount} Comments</span>
+			</Grid>
+
+			<hr className={classes.visibleSeparator} />
+			<CommentForm postId={postId} />
+			<Comments comments={comments} />
+		</Grid>
+	);
+
+	return (
+		<Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+			<MyButton
+				tip="Close"
+				onClick={handleClose}
+				tipClassName={classes.closeButton}
+			>
+				<CloseIcon />
+			</MyButton>
+			<DialogContent className={classes.dialogContent}>
+				{dialogMarkup}
+			</DialogContent>
+		</Dialog>
+	);
 }
 
 PostDialog.propTypes = {
-	clearErrors: PropTypes.func.isRequired,
-	getPost: PropTypes.func.isRequired,
-	postId: PropTypes.string.isRequired,
+	onClose: PropTypes.func.isRequired,
+	open: PropTypes.bool.isRequired,
 	userHandle: PropTypes.string.isRequired,
-	post: PropTypes.object.isRequired,
-	UI: PropTypes.object.isRequired,
 };
-
-const mapStateToProps = (state) => ({
-	post: state.data.post,
-	UI: state.UI,
-});
-
-const mapActionsToProps = {
-	getPost,
-	clearErrors,
-};
-
-export default connect(
-	mapStateToProps,
-	mapActionsToProps
-)(withStyles(styles)(PostDialog));

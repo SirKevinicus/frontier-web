@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AppIcon from "../images/frontier-logo.png";
 import { Link } from "react-router-dom";
@@ -8,7 +8,6 @@ import { connect } from "react-redux";
 import { loginUser } from "../redux/actions/userActions";
 
 // MUI
-import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "@material-ui/core/TextField";

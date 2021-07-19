@@ -1,13 +1,10 @@
-import React, { Fragment } from "react";
+import React from "react";
 import NoImg from "../images/no-img.webp";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // MUI
 import Paper from "@material-ui/core/Paper";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
 
 // Icons
 import LocationOn from "@material-ui/icons/LocationOn";

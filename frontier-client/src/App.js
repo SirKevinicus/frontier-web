@@ -1,11 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import "./App.css";
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	withRouter,
-} from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import themeFile from "./util/theme";
@@ -32,7 +27,6 @@ import axios from "axios";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Container from "@material-ui/core/Container";
-import Button from "@material-ui/core/Button";
 
 // Theme
 const theme = createMuiTheme(themeFile);
@@ -70,9 +64,8 @@ const App = ({ location }) => {
 			<CssBaseline />
 			<Provider store={store}>
 				<div className={classes.root}>
-					{location.pathname != "/login" && location.pathname != "/signup" && (
-						<Navbar />
-					)}
+					{location.pathname !== "/login" &&
+						location.pathname !== "/signup" && <Navbar />}
 					<Container fixed className={classes.appContainer}>
 						<Switch>
 							<AuthRoute exact path="/login" component={login} />

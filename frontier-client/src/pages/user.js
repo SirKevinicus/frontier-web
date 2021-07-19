@@ -57,7 +57,7 @@ class user extends Component {
 		// 4th case: display all posts for the user, and open the post (input through the postIdParam) using a dialog
 		const postsMarkup = loading ? (
 			<PostSkeleton />
-		) : posts === null || posts.length == 0 ? (
+		) : posts === null || posts.length === 0 ? (
 			<Paper className={classes.paper}>
 				<Typography variant="body1">
 					This user doesn't have any posts!
