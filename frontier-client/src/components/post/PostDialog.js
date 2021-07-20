@@ -79,6 +79,9 @@ export default function PostDialog(props) {
 
 	const { loading } = useSelector((state) => state.UI);
 
+	// when like is called, it returns a post without "comments" included. Comments are added in Post.js when handleClickOpen is called.
+	// a Redux call is made to getPost(postId), which adds the comments in.
+
 	const handleClose = () => {
 		onClose();
 	};
@@ -87,25 +90,37 @@ export default function PostDialog(props) {
 		<div className={classes.spinnerDiv}>
 			<CircularProgress size={200} thickness={2} />
 		</div>
-	) : (
+	) : open ? (
 		<Fragment>
 			<DialogTitle>
 				{
-					<Fragment>
-						<img
-							src={userImage}
-							alt="Profile"
-							className={classes.profileImage}
-						/>
-						<Typography
-							component={Link}
-							color="primary"
-							variant="body1"
-							to={`/users/${userHandle}`}
-						>
-							@{userHandle} • {dayjs(createdAt).format("h:mm a, MMMM DD YYYY")}
-						</Typography>
-					</Fragment>
+					<Grid container>
+						<Grid item sm={2}>
+							<img
+								src={userImage}
+								alt="Profile"
+								className={classes.profileImage}
+							/>
+						</Grid>
+						<Grid container item sm={10}>
+							<Grid item sm={12}>
+								<Typography
+									component={Link}
+									color="textPrimary"
+									variant="h5"
+									style={{ fontWeight: 500 }}
+									to={`/users/${userHandle}`}
+								>
+									{userHandle}
+								</Typography>
+							</Grid>
+							<Grid item sm={12}>
+								<Typography color="primary" variant="body1">
+									{dayjs(createdAt).format("h:mm a, MMMM DD YYYY")}
+								</Typography>
+							</Grid>
+						</Grid>
+					</Grid>
 				}
 			</DialogTitle>
 			<DialogContent>
@@ -131,7 +146,7 @@ export default function PostDialog(props) {
 				<Comments comments={comments} />
 			</DialogContent>
 		</Fragment>
-	);
+	) : null;
 
 	return (
 		<Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">

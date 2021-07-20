@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import AppIcon from "../images/frontier-logo.png";
+import AppIcon from "../assets/img/Fronter_Logo_Min.svg";
 import { Link } from "react-router-dom";
 
 // Redux
@@ -121,6 +121,7 @@ export class signup extends Component {
 							helperText={errors.handle}
 							error={errors.handle ? true : false}
 							fullWidth
+							inputProps={{ autoComplete: "off" }}
 						/>
 						{errors.general && (
 							<Typography variant="body2" className={classes.customError}>

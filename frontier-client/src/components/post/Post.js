@@ -185,7 +185,12 @@ export default function Post(props) {
 					{commentCount} Comment{commentCount !== 1 ? "s" : null}{" "}
 				</span>
 
-				<PostDialog userHandle={userHandle} open={open} onClose={handleClose} />
+				<PostDialog
+					post={post}
+					userHandle={userHandle}
+					open={open}
+					onClose={handleClose}
+				/>
 			</CardActions>
 		</Card>
 	);

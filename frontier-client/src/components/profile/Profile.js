@@ -84,7 +84,7 @@ class Profile extends Component {
 								color="primary"
 								variant="body1"
 							>
-								@{handle}
+								{/*@{handle}*/}
 							</MuiLink>
 						}
 						action={

@@ -26,5 +26,5 @@ export default function Comments(props) {
 }
 
 Comments.propTypes = {
-	comments: PropTypes.array,
+	comments: PropTypes.array.isRequired,
 };
